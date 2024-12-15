@@ -1,8 +1,8 @@
 class Config:
-    SECRET_KEY = 'your_secret_key'   # 必须设置，避免 Flask 抛出警告
-    DEBUG = True                    # 启用调试模式
-    MYSQL_HOST = 'localhost'        # 数据库主机
-    MYSQL_PORT = 3306               # 数据库端口
-    MYSQL_USER = 'root'        # 数据库用户
-    MYSQL_PASSWORD = '123456'
-    MYSQL_DB = 'Delivery'
+    SECRET_KEY = 'your_secret_key'   # Required to avoid Flask warnings, used for securely signing session cookies
+    DEBUG = True                    # Enable debug mode for development
+    MYSQL_HOST = 'localhost'        # Database host
+    MYSQL_PORT = 3306               # Database port
+    MYSQL_USER = 'root'             # Database user
+    MYSQL_PASSWORD = '123456'       # Database password
+    MYSQL_DB = 'Delivery'           # Target database name

@@ -7,9 +7,10 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object('config.Config')
     
+    # Enable Cross-Origin Resource Sharing (CORS) for the frontend
     CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
 
-    # 初始化数据库
+    # Initialize the database
     config = app.config
     create_database(
         host=config['MYSQL_HOST'],
@@ -20,12 +21,12 @@ def create_app():
     )
     init_db(app)
 
-    # 导入数据库结构
+    # Import database structure and update records
     with app.app_context():
-        import_sql_file()
-        hash_and_update_passwords()
+        import_sql_file()  # Load and execute SQL file to initialize schema
+        hash_and_update_passwords()  # Hash plaintext passwords and update them in the database
 
-    # # 注册路由
+    # Register routes
     # app.register_blueprint(user_routes.user_bp)
     # app.register_blueprint(item_routes.item_bp)
     # app.register_blueprint(category_routes.category_bp)
