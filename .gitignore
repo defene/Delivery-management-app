@@ -1,4 +1,7 @@
-/__pycache__
 /.vscode
 config.py
 .env
+
+# every __pycache__ folder in the app folder
+/**/__pycache__/
+

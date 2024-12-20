@@ -2,6 +2,7 @@ from flask import Flask
 # from .routes import category_routes, item_routes, order_routes, user_routes
 from flask_cors import CORS
 from .utils.database import init_db, import_sql_file, hash_and_update_passwords, create_database
+from app.controller import blueprints
 
 def create_app():
     app = Flask(__name__)
@@ -31,5 +32,8 @@ def create_app():
     # app.register_blueprint(item_routes.item_bp)
     # app.register_blueprint(category_routes.category_bp)
     # app.register_blueprint(order_routes.order_bp)
+
+    for blueprint in blueprints:
+        app.register_blueprint(blueprint)
 
     return app
