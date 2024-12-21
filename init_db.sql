@@ -3,11 +3,12 @@
 -- CREATE DATABASE Delivery;
 -- USE Delivery;
 
+DROP TABLE IF EXISTS Designate;
+DROP TABLE IF EXISTS Act;
 DROP TABLE IF EXISTS Deliver;
 DROP TABLE IF EXISTS Orders;
 DROP TABLE IF EXISTS Resource;
 DROP TABLE IF EXISTS Station;
-DROP TABLE IF EXISTS Act;
 DROP TABLE IF EXISTS Role;
 DROP TABLE IF EXISTS AddressInfo;
 DROP TABLE IF EXISTS User;
@@ -16,6 +17,8 @@ DROP TABLE IF EXISTS User;
 CREATE TABLE IF NOT EXISTS User (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     enabled BOOLEAN NOT NULL
@@ -127,8 +130,8 @@ INSERT INTO Role (role_name, description) VALUES
 ('staff', 'An internal staff member');
 
 -- Insert User Table
-INSERT INTO User (username, password_hash, email, enabled)
-VALUES ('admin', 'admin', 'admin@example.com', TRUE);
+INSERT INTO User (username, password_hash, first_name, last_name, email, enabled)
+VALUES ('admin', 'admin', 'admin', 'admin', 'admin@example.com', TRUE);
 
 -- Initalize Act Table
 INSERT INTO Act (user_id, role_name) VALUES
