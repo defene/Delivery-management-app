@@ -7,3 +7,4 @@ class UserDto:
     password_hash: str = 'invalid'
     email: str = 'invalid'
     enabled: bool = False
+    

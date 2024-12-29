@@ -3,6 +3,7 @@
 -- CREATE DATABASE Delivery;
 -- USE Delivery;
 
+DROP TABLE IF EXISTS ResetToken;
 DROP TABLE IF EXISTS Designate;
 DROP TABLE IF EXISTS Act;
 DROP TABLE IF EXISTS Deliver;
@@ -21,7 +22,7 @@ CREATE TABLE IF NOT EXISTS User (
     last_name VARCHAR(255) NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    enabled BOOLEAN NOT NULL
+    enabled BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 -- Creat Role Table
@@ -32,7 +33,7 @@ CREATE TABLE IF NOT EXISTS Role (
 
 -- Create Act Table
 CREATE TABLE IF NOT EXISTS Act (
-    user_id INT AUTO_INCREMENT NOT NULL,
+    user_id INT NOT NULL,
     role_name VARCHAR(255) NOT NULL,
     PRIMARY KEY (user_id, role_name),
     FOREIGN KEY (user_id) REFERENCES User(user_id),
@@ -124,16 +125,28 @@ CREATE TABLE IF NOT EXISTS Deliver (
     FOREIGN KEY (resource_id) REFERENCES Resource(resource_id)
 );
 
+-- Create ResetToken Table
+CREATE TABLE IF NOT EXISTS ResetToken (
+    token_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
+);
+
 -- Insert Role Table
 INSERT INTO Role (role_name, description) VALUES
 ('user', 'A regular client who receives services'),
 ('staff', 'An internal staff member');
 
 -- Insert User Table
-INSERT INTO User (username, password_hash, first_name, last_name, email, enabled)
-VALUES ('admin', 'admin', 'admin', 'admin', 'admin@example.com', TRUE);
+INSERT INTO User (username, password_hash, first_name, last_name, email, enabled) VALUES 
+('admin', 'admin', 'admin', 'admin', 'admin@example.com', TRUE),
+('yc7766', 'yc7766', 'yc7766', 'yc7766', 'yc7766@nyu.edu', TRUE);
 
 -- Initalize Act Table
 INSERT INTO Act (user_id, role_name) VALUES
 (1, 'user'),
-(1, 'staff');
+(1, 'staff'),
+(2, 'user');

@@ -40,8 +40,7 @@ def init_db(app):
                 port=app.config['MYSQL_PORT'],
                 user=app.config['MYSQL_USER'],
                 password=app.config['MYSQL_PASSWORD'],
-                db=app.config['MYSQL_DB'],
-                cursorclass=pymysql.cursors.DictCursor
+                db=app.config['MYSQL_DB']
             )
 
     @app.teardown_request

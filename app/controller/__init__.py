@@ -1,3 +1,4 @@
 from .Profile import profile
+from .User import auth_bp
 
-blueprints = [profile]
+blueprints = [profile, auth_bp]
