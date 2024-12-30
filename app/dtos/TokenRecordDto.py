@@ -6,3 +6,9 @@ class TokenRecordDto:
     user_id: int
     token: str
     expires_at: datetime
+
+@dataclass    
+class VerifyTokenRecordDto:
+    email: str
+    token: str
+    expires_at: datetime

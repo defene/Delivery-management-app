@@ -3,8 +3,8 @@
 -- CREATE DATABASE Delivery;
 -- USE Delivery;
 
+DROP TABLE IF EXISTS VerifyToken;
 DROP TABLE IF EXISTS ResetToken;
-DROP TABLE IF EXISTS Designate;
 DROP TABLE IF EXISTS Act;
 DROP TABLE IF EXISTS Deliver;
 DROP TABLE IF EXISTS Orders;
@@ -133,6 +133,15 @@ CREATE TABLE IF NOT EXISTS ResetToken (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     expires_at TIMESTAMP NOT NULL,
     FOREIGN KEY (user_id) REFERENCES User(user_id)
+);
+
+-- Create VerifyToken Table
+CREATE TABLE IF NOT EXISTS VerifyToken (
+    token_id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP NOT NULL
 );
 
 -- Insert Role Table

@@ -49,7 +49,7 @@ def register_user():
     try:
         data = request.json
 
-        required_fields = ["username", "password", "email", "first_name", "last_name"]
+        required_fields = ["username", "password", "email", "first_name", "last_name", "verify_token"]
         Validator.validate_required_fields(data, required_fields)
         Validator.validate_email(data["email"])
 
@@ -60,6 +60,7 @@ def register_user():
             first_name=data["first_name"],
             last_name=data["last_name"],
             role_name="user",
+            verify_token=data["verify_token"],
         )
 
         register_service.register_user(register_dto)
@@ -67,6 +68,79 @@ def register_user():
         return jsonify({"message": "User registered successfully"}), 201
     except Exception as e:
         return handle_exception(e)
+    
+@auth_bp.route("/verify-token", methods=["POST"])
+def verify_token():
+    """
+    1. Get 'email' from request body.
+    2. Generate a verify token if user exists.
+    3. Send the reset link via AWS SES (or do nothing if user not found).
+    4. Return a generic success message (avoid revealing if user exists).
+    """
+    try:
+        data = request.json
+        required_fields = ["email"]
+        Validator.validate_required_fields(data, required_fields)
+        
+        validation_rules = {
+            "email": (True, str)
+        }
+        Validator.validate_query_params(data, validation_rules)
+        Validator.validate_email(data["email"])
+        
+        email = data["email"]
+
+        # Generate a verification code for the user
+        verification_code = register_service.create_verify_token_for_user(email)
+        
+        if verification_code:
+            # Prepare email details
+            sender_email = "cyiheng312@gmail.com"  # Must be verified in SES
+            subject = "Verify Your Email Address"
+            
+            # Plain text email content
+            body_text = (
+                f"Hello,\n\n"
+                f"Thank you for registering. Please use the following verification code to verify your email address:\n\n"
+                f"{verification_code}\n\n"
+                f"If you did not request this, please ignore this email.\n\n"
+                f"Best regards,\n"
+                f"Your Company Name"
+            )
+            
+            # HTML email content
+            body_html = f"""
+            <html>
+            <body>
+                <p>Hello,</p>
+                <p>Thank you for registering. Please use the following verification code to verify your email address:</p>
+                <h2>{verification_code}</h2>
+                <p>If you did not request this, please ignore this email.</p>
+                <p>Best regards,<br>Your Company Name</p>
+            </body>
+            </html>
+            """
+            
+            # Call AWS SES utility function to send the email
+            success = send_email_ses(
+                sender=sender_email,
+                recipient=email,
+                subject=subject,
+                body_text=body_text,
+                body_html=body_html,
+                region_name="us-east-1"  # Replace with your AWS SES region
+            )
+            
+            if not success:
+                logger.warning(f"Failed to send verification email to {email}")
+        
+        # Always return a generic message to avoid revealing whether the email exists
+        return jsonify({"message": "If that email is valid, we've sent a verification code."}), 200
+
+    except Exception as e:
+        # Handle exceptions gracefully
+        return handle_exception(e)
+
     
 @auth_bp.route('/register/staff', methods=['POST'])
 @token_required
@@ -208,7 +282,8 @@ def reset_password():
         new_password = data["new_password"]
 
         print(token)
-        success = ResetService.reset_password(token, new_password)
+        print(new_password)
+        success = reset_service.reset_password(token, new_password)
         print(success)
         
         if success:

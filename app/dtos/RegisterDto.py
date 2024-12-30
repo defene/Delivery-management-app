@@ -9,3 +9,4 @@ class RegisterDTO:
     first_name: str = 'invalid'
     last_name: str = 'invalid'
     role_name: str = 'invalid'
+    verify_token: str = 'invalid'
