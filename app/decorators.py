@@ -16,7 +16,10 @@ def token_required(f):
         except ValueError:
             return jsonify({"message": "Invalid Authorization header format"}), 401
         
-        user_info = decode_jwt(token)
+        try:
+            user_info = decode_jwt(token)
+        except Exception as e:
+            return jsonify({"message": "Invalid or expired token"}), 401
         print(user_info)
         if not user_info:
             return jsonify({"message": "Invalid or expired token"}), 401

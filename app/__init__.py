@@ -7,6 +7,7 @@ from app.controller import blueprints
 def create_app():
     app = Flask(__name__)
     app.config.from_object('config.Config')
+    app.url_map.strict_slashes = False
     
     # Enable Cross-Origin Resource Sharing (CORS) for the frontend
     CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
