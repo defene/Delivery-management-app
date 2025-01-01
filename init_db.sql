@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS Orders (
     category VARCHAR(255) NOT NULL,
     payload DECIMAL(10, 2) NOT NULL,
     package_size VARCHAR(255) NOT NULL,
-    note TEXT,
+    notes TEXT,
     FOREIGN KEY (user_id) REFERENCES User(user_id),
     FOREIGN KEY (delivery_src_address_id) REFERENCES AddressInfo(address_id), 
     FOREIGN KEY (delivery_dst_address_id) REFERENCES AddressInfo(address_id),
