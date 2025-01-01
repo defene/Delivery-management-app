@@ -8,6 +8,7 @@ profile = Blueprint('profile', __name__, url_prefix='/profile')
 def get_user_by_id(id):
     profile_service = ProfileService()
     user_dto = profile_service.get_user_by_id(id)
+    print(user_dto)
     if not user_dto:
         return jsonify({'detail': 'User not found'}), 404
     else:

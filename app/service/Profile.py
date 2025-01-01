@@ -2,7 +2,7 @@ import pymysql
 
 from app.BaseService import BaseService
 from app.repo.UserRepo import UserRepo
-from app.models.UserModel import UserDto
+from app.models.UserModel import UserDto,UserWithoutPasswordDto
 from config import Config
 
 class ProfileService(BaseService):
@@ -18,7 +18,8 @@ class ProfileService(BaseService):
 
     def get_user_by_id(self, user_id):
         user = UserRepo.get_user_by_id(self.conn, user_id)
-        return UserDto(*user) if user else None
+        print(user)
+        return UserWithoutPasswordDto(user) if user else None
     
     def update_user_by_id_no_password(self, response_data):
         if self.get_user_by_id(response_data['user_id']) is None:
