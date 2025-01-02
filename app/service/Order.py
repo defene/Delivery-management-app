@@ -24,12 +24,13 @@ class OrderService:
         :param duration_str: A string representing the duration, e.g., "15 mins", "2 hours"
         :return: timedelta object representing the parsed duration
         """
-        pattern = r'(?P<value>\d+)\s*(?P<unit>hours?|hrs?|minutes?|mins?)'
+        # pattern = r'(?P<value>\d+)\s*(?P<unit>hours?|hrs?|minutes?|mins?)'
+        pattern = r'(?P<value>\d+(\.\d+)?)\s*(?P<unit>hours?|hrs?|minutes?|mins?)'
         match = re.match(pattern, duration_str.lower())
         if not match:
             raise ValueError(f"Invalid duration format: {duration_str}")
         
-        value = int(match.group('value'))
+        value = int(float(match.group('value')))
         unit = match.group('unit')
         
         if unit.startswith('hour') or unit.startswith('hr'):
