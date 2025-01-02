@@ -39,3 +39,19 @@ class AddressInfoRepo:
             rows = cursor.fetchall()
             return [AddressInfoDto(*row) for row in rows] if rows else []
         
+    @staticmethod
+    def check_address_exists(user_id: str, address_id: str) -> bool:
+        """
+        Check if an address exists in the database.
+        """
+        conn = get_db_connection()
+        with conn.cursor() as cursor:
+            query = """
+                SELECT EXISTS (
+                    SELECT 1 
+                    FROM AddressInfo 
+                    WHERE user_id = %s and address_id = %s
+                )
+            """
+            cursor.execute(query, (user_id, address_id))
+            return cursor.fetchone() is not None
