@@ -147,7 +147,7 @@ def verify_token():
 @roles_required("staff")
 def register_staff():
     try:
-        data = request.json
+        data = request.jsonD
 
         required_fields = ["username", "email", "first_name", "last_name"]
         Validator.validate_required_fields(data, required_fields)

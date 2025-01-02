@@ -1,5 +1,4 @@
 from flask import Flask
-# from .routes import category_routes, item_routes, order_routes, user_routes
 from flask_cors import CORS
 from .utils.database import init_db, import_sql_file, hash_and_update_passwords, create_database
 from app.controller import blueprints
@@ -27,13 +26,7 @@ def create_app():
     with app.app_context():
         import_sql_file()  # Load and execute SQL file to initialize schema
         hash_and_update_passwords()  # Hash plaintext passwords and update them in the database
-
-    # Register routes
-    # app.register_blueprint(user_routes.user_bp)
-    # app.register_blueprint(item_routes.item_bp)
-    # app.register_blueprint(category_routes.category_bp)
-    # app.register_blueprint(order_routes.order_bp)
-
+        
     for blueprint in blueprints:
         app.register_blueprint(blueprint)
 

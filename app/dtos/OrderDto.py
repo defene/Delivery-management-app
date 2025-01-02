@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 
 @dataclass
-class OrderDto:
+class OrderDTO:
     station_id = -1
+    user_id = -1
     source_address_id = -1
     dest_address_id = -1
     delivery_method = 'robot'
