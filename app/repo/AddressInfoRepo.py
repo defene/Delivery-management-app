@@ -49,8 +49,8 @@ class AddressInfoRepo:
             query = """
                 SELECT EXISTS (
                     SELECT 1 
-                    FROM Station 
-                    WHERE station_id = %s
+                    FROM AddressInfo 
+                    WHERE user_id = %s and address_id = %s
                 )
             """
             cursor.execute(query, (user_id, address_id))

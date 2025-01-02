@@ -159,3 +159,41 @@ INSERT INTO Act (user_id, role_name) VALUES
 (1, 'user'),
 (1, 'staff'),
 (2, 'user');
+
+-- Insert Station Table
+INSERT INTO Station (
+    station_name,
+    address_line_1,
+    address_line_2,
+    zip_code,
+    latitude,
+    longitude,
+    max_drone_capacity,
+    max_robot_capacity,
+    current_drone_count,
+    current_robot_count,
+    current_available_drone_count,
+    current_available_robot_count,
+    current_working_drone_count,
+    current_working_robot_count,
+    dispatch_strategy,
+    enabled
+) VALUES
+('Market Street Station', '123 Market St', 'Suite 100', '94103', 37.774929, -122.419416, 30, 20, 25, 18, 20, 15, 5, 3, 'FIFO', TRUE),
+('Mission Bay Station', '456 Mission Bay Blvd', NULL, '94158', 37.7650, -122.3900, 25, 15, 20, 12, 18, 10, 2, 2, 'Priority', TRUE),
+('Sunset Station', '789 Sunset Blvd', 'Floor 2', '94122', 37.7600, -122.4477, 40, 25, 35, 22, 30, 18, 5, 4, 'RoundRobin', FALSE);
+
+-- Insert AddressInfo Table
+INSERT INTO AddressInfo (
+    user_id,
+    first_name,
+    last_name,
+    phone,
+    address_line_1,
+    address_line_2,
+    zip_code,
+    latitude,
+    longitude
+) VALUES
+(1, 'John', 'Doe', '123-456-7890', '1 Embarcadero Center', 'Floor 20', '94111', 37.7952, -122.3937),
+(1, 'Jane', 'Doe', '123-456-7890', '1600 Holloway Ave', NULL, '94132', 37.7295, -122.4376);

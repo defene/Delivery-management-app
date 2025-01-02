@@ -28,6 +28,24 @@ class UserRepo:
                 return UserDto(*row)
         except Exception as e:
             raise DatabaseError(f"Error fetching user by ID {user_id}: {e}")
+        
+    @staticmethod
+    def check_user_exists(user_id: int) -> bool:
+        conn = get_db_connection()
+        try:
+            with conn.cursor() as cursor:
+                query = """
+                    SELECT EXISTS (
+                        SELECT 1 
+                        FROM `User` 
+                        WHERE user_id = %s
+                    )
+                """
+                cursor.execute(query, (user_id))
+                count = cursor.fetchone()[0]
+                return count > 0
+        except Exception as e:
+            raise DatabaseError(f"Error checking user {user_id}: {e}")
 
     @staticmethod
     def update_user_by_id_no_password(user_dto: UserDto) -> int:
