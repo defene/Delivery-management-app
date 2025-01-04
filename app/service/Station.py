@@ -97,6 +97,7 @@ class StationService:
             item = {
                 'station_id': s.station_id,
                 'station_name': s.station_name,
+                'station_address': f"{s.address_line_1} {s.address_line_2 if s.address_line_2 else ''}",
                 'available_drones': s.current_available_drone_count,
                 'available_robots': s.current_available_robot_count
             }
