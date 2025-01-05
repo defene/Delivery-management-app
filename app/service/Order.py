@@ -6,8 +6,8 @@ from app.repo.OrderRepo import OrderRepo
 from app.repo.AddressInfoRepo import AddressInfoRepo
 from app.repo.StationRepo import StationRepo
 from app.repo.UserRepo import UserRepo
-from app.exceptions import AuthenticationError
-
+from app.exceptions import AuthenticationError, DatabaseError
+from typing import List
 from datetime import datetime, timedelta
 
 class OrderService:
@@ -71,3 +71,25 @@ class OrderService:
         
         order_id = self.order_repo.create_order(order_model)
         return order_id
+    
+
+    def delete_order(self, order_id: int) -> None:
+        """
+        Deletes an order from the database based on the given order_id.
+        
+        :param order_id: The ID of the order to be deleted.
+        :raises DatabaseError: If the order could not be deleted due to a database error.
+        """
+        try:
+            self.order_repo.delete_order(order_id)
+        except DatabaseError as e:
+            raise DatabaseError(f"Failed to delete order with ID {order_id}: {e}")
+        
+    def get_user_orders(self, user_id: int) -> List[OrderModel]:
+        """
+        Retrieves all orders for a specific user ID.
+
+        :param user_id: The ID of the user whose orders are to be retrieved.
+        :return: A list of OrderModel instances.
+        """
+        return self.order_repo.get_orders_by_user(user_id)
