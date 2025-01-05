@@ -60,3 +60,51 @@ def create_order():
     except Exception as e:
         return handle_exception(e)
         
+@order_bp.route('/delete/<int:order_id>', methods=['DELETE'])
+@token_required
+@roles_required('user')
+def delete_order(order_id):
+    """
+    Deletes an order by its ID.
+    """
+    try:
+        order_service.delete_order(order_id)
+        return jsonify({"message": f"Order with ID {order_id} has been deleted successfully."}), 200
+    except Exception as e:
+        return handle_exception(e)
+    
+@order_bp.route('/orders', methods=['GET'])
+@token_required
+@roles_required('user')
+def get_user_orders():
+    """
+    API endpoint to fetch all orders for the authenticated user.
+
+    :return: A JSON response with the list of orders.
+    """
+    try:
+        user_id = int(request.user["sub"])  # Extract user ID from bearer token
+        orders = order_service.get_user_orders(user_id)
+        orders_data = [
+            {
+                "order_id": order.order_id,
+                "user_id": order.user_id,
+                "station_id": order.station_id,
+                "delivery_src_address_id": order.delivery_src_address_id,
+                "delivery_dst_address_id": order.delivery_dst_address_id,
+                "created_at": order.created_at,
+                "updated_at": order.updated_at,
+                "expected_at": order.expected_at,
+                "total_price": order.total_price,
+                "order_status": order.order_status,
+                "delivery_method": order.delivery_method,
+                "category": order.category,
+                "payload": order.payload,
+                "package_size": order.package_size,
+                "notes": order.notes,
+            }
+            for order in orders
+        ]
+        return jsonify(orders_data), 200
+    except Exception as e:
+        return handle_exception(e)
